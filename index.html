@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTHub Việt Nam | Kế hoạch Rà soát & Phân loại CSDL Đất đai - 90 Ngày</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --pthub-primary: #0e2a47; /* Navy */
+            --pthub-primary-2: #143a66; /* Darker Navy */
+            --pthub-secondary: #f59e0b; /* Amber */
+            --pthub-secondary-2: #fbbf24; /* Lighter Amber */
+            --pthub-bg: #f5f7fb; /* Light background */
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--pthub-bg);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--pthub-primary) 0%, var(--pthub-primary-2) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 6px 12px;
+            background: var(--pthub-secondary);
+            color: #111827;
+            font-weight: 700;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+        .section-title {
+            color: var(--pthub-primary);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        nav {
+            background: #ffffff;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        nav button {
+            padding: 12px 20px;
+            background: #ffffff;
+            border: 2px solid var(--pthub-primary);
+            border-radius: 10px;
+            color: var(--pthub-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        
+        nav button:hover, nav button.active {
+            background: var(--pthub-primary);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(14, 42, 71, 0.25);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: var(--pthub-primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--pthub-primary) 0%, var(--pthub-primary-2) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .table-responsive table {
+            min-width: 700px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--pthub-primary) 0%, var(--pthub-primary-2) 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .timeline {
+            margin-top: 30px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: var(--pthub-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(14, 42, 71, 0.3);
+        }
+        
+        .timeline-content {
+            flex: 1;
+            margin-left: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        
+        .wbs-diagram {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            overflow-x: auto;
+            padding: 20px;
+        }
+        
+        .wbs-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .wbs-node {
+            background: linear-gradient(135deg, var(--pthub-primary) 0%, var(--pthub-primary-2) 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .wbs-children {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .wbs-child {
+            background: #f8f9fa;
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 2px solid var(--pthub-primary);
+            position: relative;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .tech-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, white 100%);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--pthub-primary);
+            transition: all 0.3s;
+        }
+        
+        .tech-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(14, 42, 71, 0.2);
+        }
+        
+        .tech-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pthub-secondary) 0%, var(--pthub-secondary-2) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #111827;
+            font-weight: 700;
+            transition: width 1s ease;
+        }
+
+        /* Solutions and Commitments */
+        .solution-card, .commit-card {
+            border: 2px solid var(--pthub-primary);
+            border-radius: 12px;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(14, 42, 71, 0.08);
+        }
+        .commit-card h3 {
+            color: var(--pthub-primary);
+            margin-bottom: 10px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--pthub-secondary);
+            color: #111827;
+            font-size: 0.85em;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .stat-number {
+                font-size: 2em;
+            }
+            .chart-container {
+                height: 300px;
+                padding: 16px;
+            }
+        }
+        @media (max-width: 480px) {
+            .chart-container {
+                height: 240px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brand-badge">PTHub Việt Nam · Công nghệ khai mở tương lai</div>
+            <h1>DỰ ÁN RÀ SOÁT & PHÂN LOẠI CSDL ĐẤT ĐAI</h1>
+            <div class="subtitle">Kế hoạch 90 ngày do PTHub đề xuất · 340.000 thửa đất</div>
+        </header>
+        
+        <nav>
+            <button class="active" onclick="showSection('overview')">Tổng quan</button>
+            <button onclick="showSection('technology')">Công nghệ</button>
+            <button onclick="showSection('solutions')">Giải pháp</button>
+            <button onclick="showSection('wbs')">Phân rã Công việc</button>
+            <button onclick="showSection('timeline')">Lịch trình</button>
+            <button onclick="showSection('team')">Nhân sự</button>
+            <button onclick="showSection('commitments')">Cam kết</button>
+            <button onclick="showSection('dashboard')">Dashboard</button>
+        </nav>
+        
+        <div class="content">
+            <!-- Tổng quan Section -->
+            <div id="overview" class="section active">
+                <h2 class="section-title">📊 Tổng quan Dự án</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Tổng số thửa đất</div>
+                        <div class="stat-number">340,000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Thời gian thực hiện</div>
+                        <div class="stat-number">90</div>
+                        <div class="stat-label">Ngày</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Nhân sự cốt lõi</div>
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Chuyên gia</div>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🎯 Mục tiêu</h3>
+                        <p>Phân loại toàn bộ 340.000 thửa đất trong CSDL thành 3 nhóm:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>Nhóm 1:</strong> Dữ liệu đầy đủ, sẵn sàng sử dụng</li>
+                            <li><strong>Nhóm 2:</strong> Thiếu thông tin, cần bổ sung</li>
+                            <li><strong>Nhóm 3:</strong> Không hợp lệ, cần xử lý đặc biệt</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>⚡ Phương pháp PTHub</h3>
+                        <p>Kết hợp AI + quy trình chuẩn doanh nghiệp:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Tự động hoá phân loại bằng luật + mô hình ML</li>
+                            <li>Kết nối API đối soát dữ liệu dân cư (bảo mật, log đầy đủ)</li>
+                            <li>OCR nâng cao (server VN), tiền xử lý & hậu kiểm</li>
+                            <li>Giao diện xác minh bán tự động cho Nhóm 2 (HITL)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📈 Kết quả mong đợi</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%">75% tự động hóa</div>
+                        </div>
+                        <p style="margin-top: 15px;">CSDL được phân loại rõ ràng, sẵn sàng cho các bước xử lý tiếp theo</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Công nghệ Section -->
+            <div id="technology" class="section">
+                <h2 class="section-title">🔧 Stack Công nghệ</h2>
+                
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-icon">🗄️</div>
+                        <h3>PostgreSQL + PostGIS</h3>
+                        <p>Nền tảng CSDL không gian mạnh mẽ, mã nguồn mở</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">🐍</div>
+                        <h3>Python</h3>
+                        <p>Pandas/GeoPandas cho xử lý và phân tích dữ liệu</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">🤖</div>
+                        <h3>OCR AI</h3>
+                        <p>Google Cloud Vision / FPT.AI cho nhận dạng văn bản</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">🔤</div>
+                        <h3>NLP Processing</h3>
+                        <p>Fuzzy matching cho đối chiếu tên và địa chỉ</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">📊</div>
+                        <h3>Power BI</h3>
+                        <p>Dashboard real-time cho lãnh đạo theo dõi</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">🔐</div>
+                        <h3>API Dân cư</h3>
+                        <p>Kết nối an toàn với CSDL Công an</p>
+                    </div>
+                </div>
+                
+                <div class="table-responsive" style="margin-top: 30px;">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Công nghệ</th>
+                            <th>Ưu điểm</th>
+                            <th>Rủi ro</th>
+                            <th>Giải pháp</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>PostgreSQL/PostGIS</strong></td>
+                            <td>Miễn phí, hiệu năng cao, cộng đồng lớn</td>
+                            <td>Cần chuyên môn cao</td>
+                            <td>Thuê Data Architect có kinh nghiệm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Python Scripts</strong></td>
+                            <td>Phát triển nhanh, linh hoạt</td>
+                            <td>Quản lý phiên bản phức tạp</td>
+                            <td>Sử dụng Git, tối ưu code vector hóa</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OCR AI</strong></td>
+                            <td>Độ chính xác >95%</td>
+                            <td>Chi phí theo lượng, bảo mật</td>
+                            <td>Ký NDA, ưu tiên server Việt Nam</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NLP Matching</strong></td>
+                            <td>Giảm 90% thời gian rà soát</td>
+                            <td>Có thể có sai sót</td>
+                            <td>Human-in-the-loop verification</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Giải pháp (Solutions) Section -->
+            <div id="solutions" class="section">
+                <h2 class="section-title">🧩 Giải pháp công nghệ của PTHub</h2>
+                <div class="grid">
+                    <div class="solution-card">
+                        <span class="badge">AI</span>
+                        <h3>Phân loại thông minh</h3>
+                        <p>Áp dụng mô hình học máy, luật nghiệp vụ và fuzzy matching để phân loại 3 nhóm dữ liệu với độ chính xác cao.</p>
+                    </div>
+                    <div class="solution-card">
+                        <span class="badge">OCR</span>
+                        <h3>Nhận dạng tài liệu</h3>
+                        <p>OCR tiếng Việt chất lượng cao, xử lý ảnh mờ/xiên, kết hợp hậu kiểm để đảm bảo tính chính xác.</p>
+                    </div>
+                    <div class="solution-card">
+                        <span class="badge">API</span>
+                        <h3>Kết nối an toàn</h3>
+                        <p>Tích hợp API xác thực dữ liệu với audit log, phân quyền truy cập và mã hoá dữ liệu.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WBS Section -->
+            <div id="wbs" class="section">
+                <h2 class="section-title">📋 Cấu trúc Phân rã Công việc (WBS)</h2>
+                
+                <div class="wbs-diagram">
+                    <div class="wbs-tree">
+                        <div class="wbs-node">DỰ ÁN RÀ SOÁT CSDL ĐẤT ĐAI</div>
+                        <div class="wbs-children">
+                            <div class="wbs-child">
+                                <strong>Giai đoạn 1</strong><br>
+                                Khởi động & Xây dựng<br>
+                                (Tuần 1-4)
+                            </div>
+                            <div class="wbs-child">
+                                <strong>Giai đoạn 2</strong><br>
+                                Triển khai Hàng loạt<br>
+                                (Tuần 5-11)
+                            </div>
+                            <div class="wbs-child">
+                                <strong>Giai đoạn 3</strong><br>
+                                Tổng kết & Bàn giao<br>
+                                (Tuần 12-13)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>📅 Giai đoạn 1: Khởi động (30 ngày)</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>WP 1.1: Quản lý dự án & Khởi động</li>
+                            <li>WP 1.2: Thiết lập môi trường kỹ thuật</li>
+                            <li>WP 1.3: Phát triển Engine phân loại</li>
+                            <li>WP 1.4: Tích hợp API</li>
+                            <li>WP 1.5: Thí điểm 10.000 thửa</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>⚙️ Giai đoạn 2: Triển khai (45 ngày)</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>WP 2.1: Phân loại tự động hàng loạt</li>
+                            <li>WP 2.2: Phát triển giao diện xử lý</li>
+                            <li>WP 2.3: Vận hành xử lý Nhóm 2</li>
+                            <li>WP 2.4: Báo cáo & Giám sát</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>✅ Giai đoạn 3: Tổng kết (15 ngày)</h3>
+                        <ul style="margin-left: 20px;">
+                            <li>WP 3.1: Kiểm thử và nghiệm thu</li>
+                            <li>WP 3.2: Hoàn thiện báo cáo</li>
+                            <li>WP 3.3: Bàn giao & Đóng dự án</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline Section -->
+            <div id="timeline" class="section">
+                <h2 class="section-title">⏰ Lịch trình Chi tiết</h2>
+                
+                <div class="chart-container">
+                    <canvas id="ganttChart"></canvas>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h3>Tuần 1-2: Khởi động & Thiết lập</h3>
+                            <p>Họp khởi động, cấu hình máy chủ, cài đặt PostgreSQL/PostGIS, nạp 340.000 bản ghi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h3>Tuần 3-4: Phát triển & Thí điểm</h3>
+                            <p>Viết script phân loại, tích hợp API, chạy thử nghiệm trên 10.000 thửa đất</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h3>Tuần 5-7: Phân loại Tự động</h3>
+                            <p>Chạy phân loại tự động Nhóm 1 & 3, phát triển giao diện xử lý Nhóm 2</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h3>Tuần 8-11: Xử lý Nhóm 2</h3>
+                            <p>Đào tạo nhân viên, vận hành xử lý bán tự động cho các thửa đất Nhóm 2</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">5</div>
+                        <div class="timeline-content">
+                            <h3>Tuần 12-13: Hoàn thiện</h3>
+                            <p>Kiểm thử cuối cùng, viết báo cáo, bàn giao sản phẩm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Section -->
+            <div id="team" class="section">
+                <h2 class="section-title">👥 Cấu trúc Nhân sự</h2>
+                
+                <div class="chart-container">
+                    <canvas id="teamChart"></canvas>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Vị trí</th>
+                            <th>SL</th>
+                            <th>Trách nhiệm chính</th>
+                            <th>Yêu cầu</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>Project Manager</strong></td>
+                            <td>1</td>
+                            <td>Quản lý toàn bộ dự án, điều phối nhân sự</td>
+                            <td>Toàn thời gian, kinh nghiệm quản lý dự án IT</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Architect</strong></td>
+                            <td>1</td>
+                            <td>Thiết kế kỹ thuật, tối ưu CSDL</td>
+                            <td>Chuyên môn sâu PostgreSQL/PostGIS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Engineer</strong></td>
+                            <td>2</td>
+                            <td>Viết script xử lý, tích hợp API</td>
+                            <td>Thành thạo SQL, Python (Pandas)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GIS Expert</strong></td>
+                            <td>1</td>
+                            <td>Xử lý dữ liệu không gian</td>
+                            <td>Am hiểu GIS và PostGIS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Web Developer</strong></td>
+                            <td>1</td>
+                            <td>Phát triển giao diện xử lý</td>
+                            <td>2-3 tuần trong Giai đoạn 2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>QA/QC Specialist</strong></td>
+                            <td>1</td>
+                            <td>Kiểm tra chất lượng</td>
+                            <td>Tỉ mỉ, kinh nghiệm kiểm thử</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chuyên viên Nghiệp vụ</strong></td>
+                            <td>3-4</td>
+                            <td>Xác minh dữ liệu Nhóm 2</td>
+                            <td>Từ Sở TN&MT, toàn thời gian 4-5 tuần</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section">
+                <h2 class="section-title">📊 Dashboard Theo dõi</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Tiến độ tổng thể</div>
+                        <div id="stat-progress" class="stat-number">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Thửa đã xử lý</div>
+                        <div id="stat-processed" class="stat-number">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ngày còn lại</div>
+                        <div id="stat-days" class="stat-number">90</div>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>Phân loại theo Nhóm</h3>
+                        <canvas id="classificationChart"></canvas>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Tiến độ theo Tuần</h3>
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 30px;">
+                    <h3>Mô phỏng Tiến độ Real-time</h3>
+                    <div class="progress-bar">
+                        <div id="simulatedProgress" class="progress-fill" style="width: 0%">0%</div>
+                    </div>
+                    <button onclick="simulateProgress()" style="margin-top: 15px; padding: 10px 20px; background: var(--pthub-primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Chạy mô phỏng tiến độ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cam kết Section -->
+            <div id="commitments" class="section">
+                <h2 class="section-title">🤝 Cam kết của PTHub</h2>
+                <div class="grid">
+                    <div class="commit-card">
+                        <h3>Nội bộ</h3>
+                        <p>Xây dựng môi trường làm việc lý tưởng, khuyến khích sáng tạo, trân trọng tài năng.</p>
+                    </div>
+                    <div class="commit-card">
+                        <h3>Đối tác</h3>
+                        <p>Cung cấp giải pháp vượt trội, tối ưu vận hành, gia tăng doanh thu và lợi thế cạnh tranh.</p>
+                    </div>
+                    <div class="commit-card">
+                        <h3>Xã hội</h3>
+                        <p>Thúc đẩy chuyển đổi số tại Việt Nam, đào tạo nguồn nhân lực công nghệ chất lượng cao.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('nav button');
+            
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Initialize charts when showing dashboard
+            if (sectionId === 'dashboard') {
+                initDashboardCharts();
+            } else if (sectionId === 'timeline') {
+                initGanttChart();
+            } else if (sectionId === 'team') {
+                initTeamChart();
+            }
+        }
+        
+        // Gantt Chart
+        function initGanttChart() {
+            const ctx = document.getElementById('ganttChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart if it exists
+            if (window.ganttChartInstance) {
+                window.ganttChartInstance.destroy();
+            }
+            
+            window.ganttChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Khởi động', 'Thiết lập MT', 'Phát triển Engine', 'Tích hợp API', 'Thí điểm', 
+                             'Phân loại tự động', 'Giao diện', 'Xử lý Nhóm 2', 'Kiểm thử', 'Bàn giao'],
+                    datasets: [{
+                        label: 'Thời gian (ngày)',
+                        data: [3, 7, 13, 11, 6, 15, 10, 31, 5, 3],
+                        backgroundColor: [
+                            'rgba(14, 42, 71, 0.85)',
+                            'rgba(20, 58, 102, 0.85)',
+                            'rgba(14, 42, 71, 0.85)',
+                            'rgba(20, 58, 102, 0.85)',
+                            'rgba(14, 42, 71, 0.85)',
+                            'rgba(20, 58, 102, 0.85)',
+                            'rgba(14, 42, 71, 0.85)',
+                            'rgba(20, 58, 102, 0.85)',
+                            'rgba(14, 42, 71, 0.85)',
+                            'rgba(20, 58, 102, 0.85)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Lịch trình các Gói công việc',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Số ngày'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Team Chart
+        function initTeamChart() {
+            const ctx = document.getElementById('teamChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart if it exists
+            if (window.teamChartInstance) {
+                window.teamChartInstance.destroy();
+            }
+            
+            window.teamChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Project Manager', 'Data Architect', 'Data Engineer', 'GIS Expert', 'Web Dev', 'QA/QC', 'Nghiệp vụ'],
+                    datasets: [{
+                        data: [1, 1, 2, 1, 1, 1, 4],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.9)',
+                            'rgba(118, 75, 162, 0.9)',
+                            'rgba(244, 114, 182, 0.9)',
+                            'rgba(192, 132, 252, 0.9)',
+                            'rgba(134, 239, 172, 0.9)',
+                            'rgba(253, 186, 116, 0.9)',
+                            'rgba(248, 113, 113, 0.9)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Phân bổ Nhân sự theo Vai trò',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Dashboard Charts
+        function initDashboardCharts() {
+            // Classification Chart
+            const classCtx = document.getElementById('classificationChart');
+            if (classCtx) {
+                if (window.classChartInstance) {
+                    window.classChartInstance.destroy();
+                }
+                
+                window.classChartInstance = new Chart(classCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Nhóm 1 (Đầy đủ)', 'Nhóm 2 (Cần bổ sung)', 'Nhóm 3 (Không hợp lệ)'],
+                        datasets: [{
+                            data: [170000, 136000, 34000],
+                            backgroundColor: [
+                                'rgba(20, 58, 102, 0.85)',
+                                'rgba(245, 158, 11, 0.85)',
+                                'rgba(248, 113, 113, 0.85)'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Dự kiến Phân loại (340.000 thửa)'
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Progress Chart
+            const progCtx = document.getElementById('progressChart');
+            if (progCtx) {
+                if (window.progChartInstance) {
+                    window.progChartInstance.destroy();
+                }
+                
+                window.progChartInstance = new Chart(progCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4', 'Tuần 5', 'Tuần 6', 
+                                'Tuần 7', 'Tuần 8', 'Tuần 9', 'Tuần 10', 'Tuần 11', 'Tuần 12', 'Tuần 13'],
+                        datasets: [{
+                            label: 'Kế hoạch',
+                            data: [2, 5, 10, 20, 35, 45, 55, 65, 75, 85, 92, 97, 100],
+                            borderColor: 'rgba(20, 58, 102, 1)',
+                            backgroundColor: 'rgba(20, 58, 102, 0.08)',
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            title: {
+                                display: true,
+                                text: 'Tiến độ Dự kiến (%)'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Simulate Progress
+        function simulateProgress() {
+            let progress = 0;
+            const progressBar = document.getElementById('simulatedProgress');
+            const interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+                
+                // Update stats
+                const processedRecords = Math.floor((progress / 100) * 340000);
+                const daysRemaining = Math.floor(90 - (progress / 100) * 90);
+                
+                const statProgress = document.getElementById('stat-progress');
+                const statProcessed = document.getElementById('stat-processed');
+                const statDays = document.getElementById('stat-days');
+                if (statProgress) statProgress.textContent = progress + '%';
+                if (statProcessed) statProcessed.textContent = processedRecords.toLocaleString();
+                if (statDays) statDays.textContent = daysRemaining;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>
